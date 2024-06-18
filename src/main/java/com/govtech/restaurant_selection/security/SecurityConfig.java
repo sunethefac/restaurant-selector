@@ -43,7 +43,7 @@ public class SecurityConfig {
                                             .invalidateHttpSession(true)
                                             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                             .permitAll());
-http.headers().frameOptions().disable();
+
         return http.build();
 
     }
