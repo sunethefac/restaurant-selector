@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+<head>
+    <title>Create Restaurant Selection Session</title>
+</head>
+<body>
+<section class="container" layout:fragment="body">
+    <h5 class="form-group my-4">Create New Restaurant Selection Session</h5>
+    <div class="row">
+        <div class="col-4">
+            <form method="post" role="form" th:action="@{/session/create/new}" th:object="${restaurantSelectionSession}">
+                <div class="form-group">
+                    <label for="sessionName">Restaurant Selection Session Name</label>
+                    <input type="text" class="form-control" id="sessionName" placeholder="Name" th:field="*{sessionName}">
+                </div>
+                <p th:if="${#fields.hasErrors('sessionName')}" class="text-danger" th:errors="*{sessionName}"></p>
+                <div class="form-group mb-3">
+                    <label for="restaurantName">Restaurant Name</label>
+                    <input type="text" class="form-control" id="restaurantName" placeholder="Proposed Restaurant Name" th:field="*{restaurantName}">
+                </div>
+                <p th:if="${#fields.hasErrors('restaurantName')}" class="text-danger" th:errors="*{restaurantName}"></p>
+                <button type="submit" class="btn btn-primary">Create Restaurant Selection Session</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

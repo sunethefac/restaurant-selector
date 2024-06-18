@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Session</title>
+    <link rel="stylesheet" th:href="@{/css/sessions.css}">
+</head>
+<body>
+<section class="container" layout:fragment="body">
+    <div class="mt-5">
+        <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Restaurant Selection Session Started Successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${param.restaurantAdded}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Restaurant Added Successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${param.restaurantValidationError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            Restaurant Name should not be empty!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${param.restaurantSelected}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Restaurant Selection Session closed successfully and Restaurant is selected!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="row my-5">
+            <div class="col">
+                <h5 class="me-3 mb-0">Restaurant Selection Session Initiated By </h5>
+                <p class="mb-0 text-muted" th:text="${restaurantSelectionSession.owner.firstName} + ' ' + ${restaurantSelectionSession.owner.lastName}"></p>
+            </div>
+            <div class="col flex-shrink-0 text-end">
+                <button th:if="${!hasUserAlreadyAddedRestaurant}"
+                        type="button"
+                        class="btn btn-info"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addRestaurantModal">
+                    Propose a Restaurant
+                </button>
+                <div th:if="${allowedToCloseSession}">
+                    <form method="post" role="form" th:href="@{/sessions/{sessionId}(sessionId=${restaurantSelectionSession.id})}" >
+                        <button type="submit" class="btn btn-warning ml-3">Close Session</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 mb-3 mb-lg-5">
+                <div class="card">
+                    <div class="d-flex card-header justify-content-between">
+                        <h5 class="me-3 mb-0">Proposed Restaurants</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!--List-item-->
+                            <li th:each="restaurant: ${restaurantSelectionSession.restaurants}"
+                                class="list-group-item"
+                                th:classappend="${restaurant.selected ? 'selected-restaurant' : ''}">
+                                <div class="d-flex align-items-center"
+                                     data-toggle=""
+                                     th:attrappend="title=${restaurant.selected}?'This Restaurant is selected in this session'"
+                                     th:style="${restaurant.selected ? 'cursor: pointer;' : ''}">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img th:src="@{/images/restaurant.jpg}" alt="" class="avatar rounded-circle" />
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0" th:text="${restaurant.restaurantName}"></h6>
+                                        <p class="mb-0 text-muted" th:text="'Proposed By ' + ${restaurant.user.firstName} + ' ' + ${restaurant.user.lastName}"></p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Propose Restaurant Modal -->
+    <div class="modal fade" id="addRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="addRestaurantModalLabel" aria-hidden="true">
+        <script th:inline="javascript" th:if="${#fields.hasErrors('restaurant.name')}">
+            console.log("Suneth");
+            $("#addRestaurantModal").modal("show");
+        </script>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRestaurantModalLabel">Propose a Restaurant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" role="form" th:action="@{/restaurant/add/{sessionId}(sessionId=${restaurantSelectionSession.id})}" th:object="${restaurant}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name" class="col-form-label">Restaurant Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Restaurant Name" th:field="*{name}">
+                        </div>
+                        <p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

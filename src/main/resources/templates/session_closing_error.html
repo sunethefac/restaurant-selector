@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+<head>
+    <title>Register User</title>
+</head>
+<body>
+<section class="container" layout:fragment="body">
+    <div th:if="${param.notAllowed}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        You are not allowed to close this session!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</section>
+</body>
+</html>

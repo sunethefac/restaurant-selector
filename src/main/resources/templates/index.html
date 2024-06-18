@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base_layout}">
+<head>
+    <title>Sessions</title>
+    <link rel="stylesheet" th:href="@{/css/sessions.css}">
+</head>
+<body>
+<section class="container" layout:fragment="body">
+    <div class="mt-5">
+        <div class="row">
+            <div class="col-xl-12 mb-3 mb-lg-5">
+                <div class="card">
+                    <div class="d-flex card-header justify-content-between">
+                        <h5 class="me-3 mb-0">Active Sessions</h5>
+                    </div>
+                    <div class="card-body" th:if="${restaurantSelectionSessions.size() > 0}">
+                        <ul class="list-group list-group-flush">
+                            <!--List-item-->
+                            <li th:each="restaurantSelectionSession: ${restaurantSelectionSessions}" class="list-group-item pt-0">
+                                <a th:href="@{/sessions/{sessionId}(sessionId=${restaurantSelectionSession.id})}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <img th:src="@{/images/lunch.png}" alt="" class="avatar rounded-circle" />
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-0" > Restaurant Selection Session By</h6>
+                                            <p class="mb-0 text-muted"
+                                               th:text="${restaurantSelectionSession.owner.firstName} + ' ' + ${restaurantSelectionSession.owner.lastName}"></p>
+                                        </div>
+                                        <div class="flex-shrink-0 text-end">
+                                            <span th:text="${restaurantSelectionSession.name}"></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body" th:if="${restaurantSelectionSessions.size() == 0}">
+                        No Active Sessions yet!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

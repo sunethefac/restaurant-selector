@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+<head>
+    <title>Register User</title>
+</head>
+<body>
+<section class="container" layout:fragment="body">
+    <h5 class="form-group my-4">Register New User</h5>
+    <div class="row">
+        <div class="col-3">
+            <form method="post" role="form" th:action="@{/register/user}" th:object="${user}">
+                <div class="form-group">
+                    <label for="username">UserName</label>
+                    <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{username}">
+                </div>
+                <p th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></p>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" th:field="*{firstName}">
+                </div>
+                <p th:if="${#fields.hasErrors('firstName')}" class="text-danger" th:errors="*{firstName}"></p>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" th:field="*{lastName}">
+                </div>
+                <p th:if="${#fields.hasErrors('lastName')}" class="text-danger" th:errors="*{lastName}"></p>
+                <div class="form-group mb-4">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}">
+                </div>
+                <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+                <button type="submit" class="btn btn-primary mr-3">Register</button>
+                <a th:href="@{/login}" type="button" class="btn btn-info ml-3">Login</a>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>
